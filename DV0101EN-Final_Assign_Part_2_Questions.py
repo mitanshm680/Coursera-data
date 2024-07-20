@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
-
 import dash
 from dash import dcc
 from dash import html
@@ -45,7 +43,8 @@ app.layout = html.Div([
     html.Div(dcc.Dropdown(
             id='select-year',
             options=[{'label': i, 'value': i} for i in year_list],
-            value=2020
+            value=2020,
+            placeholder='Select Year'
         )),
     html.Div([#TASK 2.3: Add a division for output display
     html.Div(id='output-container', className='output-container', style={'marginTop': '20px'})])
@@ -58,9 +57,9 @@ app.layout = html.Div([
 )
 def update_input_container(selected_statistics):
     if selected_statistics == 'Recession Period Statistics': 
-        return False
+        return True  # Disable the year dropdown for recession statistics
     else: 
-        return True
+        return False  # Enable the year dropdown for yearly statistics
 
 # Callback for plotting
 # Define the callback function to update the output container based on the selected statistics
@@ -117,7 +116,7 @@ def update_output_container(selected_statistics, input_year):
             html.Div(className='chart-item', children=[html.Div(children=R_chart3), html.Div(children=R_chart4)], style={'display': 'flex'})
         ]
 
-    elif (input_year and selected_statistics == 'Yearly Statistics'):
+    elif selected_statistics == 'Yearly Statistics':
         yearly_data = data[data['Year'] == input_year]
         
         # Plot 1: Yearly Automobile sales using line chart
@@ -130,7 +129,7 @@ def update_output_container(selected_statistics, input_year):
         )
             
         # Plot 2: Total Monthly Automobile sales using line chart
-        mas = data.groupby('Month')['Automobile_Sales'].sum().reset_index()
+        mas = yearly_data.groupby('Month')['Automobile_Sales'].sum().reset_index()
         Y_chart2 = dcc.Graph(
             figure=px.line(mas,
                 x='Month',
