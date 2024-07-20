@@ -48,7 +48,7 @@ app.layout = html.Div([
             value=2020
         )),
     html.Div([#TASK 2.3: Add a division for output display
-    html.Div(id='output-container', className='output-container', style={'marginTop': '20px'}),])
+    html.Div(id='output-container', className='output-container', style={'marginTop': '20px'})])
 ])
 #TASK 2.4: Creating Callbacks
 # Define the callback function to update the input container based on the selected statistics
